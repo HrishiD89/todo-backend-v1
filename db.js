@@ -15,6 +15,7 @@ const User = new Schema({
 const Todos = new Schema({
     userId: objectId,
     title: String,
+    category: String,
     done:Boolean
 });
 
