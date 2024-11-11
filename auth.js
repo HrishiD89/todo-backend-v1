@@ -3,7 +3,6 @@ const JWT_SECRET = "secret";
 
 function auth(req, res, next) {
   const token = req.headers.authorization;
-  console.log(token);
   const response = jwt.verify(token, JWT_SECRET);
   if (response) {
     req.userId = response.id;

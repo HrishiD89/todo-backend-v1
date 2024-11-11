@@ -133,11 +133,11 @@ app.get("/todos", auth, async (req, res) => {
       return {
         id: todo._id.toString(),
         title : todo.title,
-        category: todo.category
+        category: todo.category,
+        done : todo.done
       }
     });
 
-    console.log(titles);
     res.json({
       titles: titles
     });
@@ -188,13 +188,14 @@ app.put('/todo', auth, async (req, res) => {
   const todoId = req.headers.todoid;
 
   try{
-    const {title,category} = req.body;
+    const {title,category,done} = req.body;
     if(userId){
       const updateTodo = await TodoModel.findOneAndUpdate(
         {_id:todoId,userId},
         {
           title,
           category,
+          done
         },
         {new : true}
       )
@@ -222,7 +223,7 @@ app.delete('/todo',auth,async (req,res)=>{
 
   try {
     if(userId){
-      const deleteTodo = await TodoModel.findByIdAndDelete({
+      const deleteTodo = await TodoModel.findOneAndDelete({
         _id:todoId,userId
       })
 
