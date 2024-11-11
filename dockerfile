@@ -19,7 +19,7 @@ COPY . .
 # Rebuild bcrypt specifically for the container's architecture
 RUN npm rebuild bcrypt --build-from-source
 
-# Expose the port the app runs on
+# Expose the port the app runs 
 EXPOSE 3000
 
 # Start the application
