@@ -4,21 +4,27 @@ import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import { auth, JWT_SECRET } from "./auth.js";
 import bcrypt from "bcrypt";
-import cors from "cors";
+// import cors from "cors";
 import { z } from "zod";
 import 'dotenv/config'
+import path from 'path';
 
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// import { fileURLToPath } from 'url';
+
+const __dirname = path.resolve()
+
+
+
+
 mongoose.connect(
   process.env.MONGO_STRING
 );
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+// app.use(cors());
 
 // Zod schemas
 const signupSchema = z.object({
@@ -43,6 +49,7 @@ const todoSchema = z.object({
   title: z.string().min(1, "Title is required"),
   category: z.string().min(1, "Category is required"),
 });
+
 
 app.post("/signup", async (req, res) => {
   try {
@@ -246,4 +253,15 @@ app.delete('/todo',auth,async (req,res)=>{
 
 })
 
-app.listen(3000);
+
+
+app.use(express.static(path.join(__dirname, "client" ,"dist")));
+
+// Catch-all route to serve index.html for all non-API routes
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "client" ,"dist" , "index.html"));
+});
+
+app.listen(3000, () => {
+  console.log("Server is running on http://localhost:3000");
+});
